@@ -68,7 +68,20 @@ The cluster only has to be initialized on the first run. Subsequent startup can 
 Its as simple as:
 
 ```
+// Router
 docker-compose exec router mongo
+
+// Config
+docker-compose exec config01 mongo
+
+// shard01a
+docker-compose exec shard01a mongo --port 27018
+
+// shard02a
+docker-compose exec shard02a mongo --port 27019
+
+// shard03a
+docker-compose exec shard03a mongo --port 27020
 ```
 
 ### Resetting the Cluster
