@@ -8,3 +8,6 @@ rs.initiate(
       ]
    }
 )
+
+// Allow reading from `shard01` mongo shell.
+rs.slaveOk()
