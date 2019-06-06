@@ -2,9 +2,7 @@ Mongo Sharded Cluster with Docker Compose
 =========================================
 A simple sharded Mongo Cluster with a replication factor of 2 running in `docker` using `docker-compose`.
 
-Designed to be quick and simple to get a local or test environment up and running. Needless to say... DON'T USE THIS IN PRODUCTION!
-
-Heavily inspired by [https://github.com/jfollenfant/mongodb-sharding-docker-compose](https://github.com/jfollenfant/mongodb-sharding-docker-compose)
+Designed to be quick and simple to get a local or test environment up and running. 
 
 ### Mongo Components
 
@@ -14,7 +12,6 @@ Heavily inspired by [https://github.com/jfollenfant/mongodb-sharding-docker-comp
 	* `shard02a`,`shard02b`
 	* `shard03a`,`shard03b`
 * 1 Router (mongos): `router`
-* (TODO): DB data persistence using docker data volumes
 
 ### First Run (initial setup)
 **Start all of the containers** (daemonized)
@@ -82,6 +79,34 @@ docker-compose exec shard02a mongo --port 27019
 
 // shard03a
 docker-compose exec shard03a mongo --port 27020
+```
+
+### Sharding
+
+Here are instructions to shard an example FHIR observations database.
+
+```
+// On Router
+
+// Create DB
+use fhir
+
+// Create collection
+db.createCollection("fhir.observations")
+
+// Enable sharding on DB
+sh.enableSharding("fhir")
+
+// Enable sharding on collection
+// (Ranged sharding is more efficient, but we use hashed to see the
+// effects with limited data)
+sh.shardCollection("fhir.observations", {"effectiveDateTime" : "hashed"})
+
+// Populate the DB
+db.observations.insert( /* stuff */ )
+
+// See sharding status
+db.printShardingStatus()
 ```
 
 ### Resetting the Cluster
