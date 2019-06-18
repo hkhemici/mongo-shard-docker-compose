@@ -1,0 +1,9 @@
+# System #
+.DS_Store
+
+# Data #
+*.csv
+
+# IDE #
+.vscode/
+atlassian-ide-plugin.xml
