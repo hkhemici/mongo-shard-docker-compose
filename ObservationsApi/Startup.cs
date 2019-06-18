@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ObservationsApi.Models;
+using ObservationsApi.Services;
 
 namespace ObservationsApi
 {
@@ -28,6 +29,7 @@ namespace ObservationsApi
         {
             services.Configure<ObservationsDatabaseSettings>(Configuration.GetSection(nameof(ObservationsDatabaseSettings)));
             services.AddSingleton<IObservationsDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ObservationsDatabaseSettings>>().Value);
+            services.AddSingleton<ObservationService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
