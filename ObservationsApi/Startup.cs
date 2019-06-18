@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ObservationsApi.Models;
 
 namespace ObservationsApi
 {
@@ -25,6 +26,8 @@ namespace ObservationsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ObservationsDatabaseSettings>(Configuration.GetSection(nameof(ObservationsDatabaseSettings)));
+            services.AddSingleton<IObservationsDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ObservationsDatabaseSettings>>().Value);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
