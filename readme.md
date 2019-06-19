@@ -83,31 +83,40 @@ docker-compose exec shard03a mongo --port 27020
 
 ### Sharding
 
-Here are instructions to shard an example FHIR observations database.
+Here are instructions to shard an example FHIR Observations database.
 
 ```
 // On Router
 
 // Create DB
-use fhir
+use ObservationsDb
 
 // Create collection
-db.createCollection("fhir.observations")
+db.createCollection("ObservationsDb.Observations")
 
 // Enable sharding on DB
-sh.enableSharding("fhir")
+sh.enableSharding("ObservationsDb")
 
 // Enable sharding on collection
 // (Ranged sharding is more efficient, but we use hashed to see the
 // effects with limited data)
-sh.shardCollection("fhir.observations", {"effectiveDateTime" : "hashed"})
+sh.shardCollection("ObservationsDb.Observations", {"effectiveDateTime" : "hashed"})
 
 // Populate the DB
-db.observations.insert( /* stuff */ )
+db.Observations.insert( /* stuff */ )
 
 // See sharding status
 db.printShardingStatus()
 ```
+
+### Launch the Observations Web API
+```
+cd ObservationsApi
+dotnet run
+```
+
+### Make requests to the Observations Web API
+Navigate to `https://localhost:5001/api/observations` or make HTTP requests to it.
 
 ### Resetting the Cluster
 To remove all data and re-initialize the cluster, make sure the containers are stopped and then:
